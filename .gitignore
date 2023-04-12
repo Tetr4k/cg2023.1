@@ -1,0 +1,6 @@
+anim
+*.o
+*.out
+*.swp
+aula*
+output.png
