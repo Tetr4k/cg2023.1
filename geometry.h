@@ -4,14 +4,22 @@
 #include "vec.h"
 
 inline float tri_area(vec2 a, vec2 b, vec2 c){
-	/*  TAREFA - AULA 2 */
-	return 0;
+	float x1 = c[0]-a[0],
+		  x2 = b[0]-a[0],
+		  y1 = b[1]-a[1],
+		  y2 = c[1]-a[1];
+
+	return (x1*y1)/2-(x2*y2)/2;
+	//return ((c[0]-a[0])*(b[1]-a[1]))/2-((b[0]-a[0])*(c[1]-a[1]))/2;
 }
 
 template<class Tri>
 vec3 barycentric_coords(vec2 p, const Tri& P){
-	/*  TAREFA - AULA 2 */
-	return {0, 0, 0};
+	float pp = tri_area(P[0], P[1], P[2]);
+  	float a1 = tri_area(p, P[1], P[2])/pp;
+  	float a2 = tri_area(P[0], p, P[2])/pp;
+  	float a3 = tri_area(P[0], P[1], p)/pp;
+	return {a1, a2, a3};
 }
 
 template<class Tri>
