@@ -33,15 +33,31 @@ class Lines{
 };
 
 class LineStrip{
-	/*****************************/
-	/* TAREFA: AULA 06 */
-	/*****************************/
+	size_t n;
+	public:
+	LineStrip(size_t n_verts){ n = n_verts-1; }
+
+	size_t size() const{ return n; }
+
+	template<typename Vertex>
+	Line<Vertex> assemble(unsigned int i, const Vertex* V) const{
+		return { V[i], V[i+1] };
+	}
 };
 
 class LineLoop{
-	/*****************************/
-	/* TAREFA: AULA 06 */
-	/*****************************/
+	size_t n;
+	public:
+	LineLoop(size_t n_verts){ n = n_verts; }
+
+	size_t size() const{ return n; }
+
+	template<typename Vertex>
+	Line<Vertex> assemble(unsigned int i, const Vertex* V) const{
+		if (i==n-1)
+			return { V[i], V[0] };
+		return { V[i], V[i+1] };
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -62,15 +78,29 @@ class Triangles{
 };
 
 class TriangleStrip{
-	/*****************************/
-	/* TAREFA: AULA 06 */
-	/*****************************/
+	size_t n;
+	public:
+	TriangleStrip(size_t s){ n = s-2; }
+
+	size_t size() const{ return n; }
+
+	template<typename Vertex>
+	Triangle<Vertex> assemble(unsigned int i, const Vertex* V) const{
+		return { V[i], V[i+1], V[i+2] };
+	}
 };
 
 class TriangleFan{
-	/*****************************/
-	/* TAREFA: AULA 06 */
-	/*****************************/
+	size_t n;
+	public:
+	TriangleFan(size_t s){ n = s-2; }
+
+	size_t size() const{ return n; }
+
+	template<typename Vertex>
+	Triangle<Vertex> assemble(unsigned int i, const Vertex* V) const{
+		return { V[0], V[i+1], V[i+2] };
+	}
 };
 
 class TrianglesRange{

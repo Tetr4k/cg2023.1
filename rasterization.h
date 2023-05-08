@@ -140,9 +140,60 @@ std::vector<Pixel> simple_rasterize_triangle(const Tri& P){
 }
 
 template<class Tri>
+bool isDegenerated(const Tri& P){
+	return P[0]==P[1] && P[1]==P[2] && P[2]==P[0];
+}
+
+bool isCrossing(vec2 A, vec2 B, int y){// Se os pontos cruzarem a reta
+	return (B[1]>=y && A[1]<=y) || (B[1]<=y && A[1]>=y);
+}
+
+float calcX(vec2 A, vec2 B, int y){
+	return (((B[0]-A[0])*(y-A[1]))/(B[1]-A[1])) + A[0];
+}
+
+vec2 intersecs(vec2 A, vec2 B, vec2 C, int y){
+	std::vector<float> xs;
+
+	if(isCrossing(A, B, y)){
+		float x = calcX(A, B, y);
+		xs.push_back(x);
+	}
+	if(isCrossing(B, C, y)){
+		float x = calcX(B, C, y);
+		xs.push_back(x);
+	}
+	if(isCrossing(C, A, y)){
+		float x = calcX(C, A, y);
+		xs.push_back(x);
+	}
+
+	float xmin =  ceil(*std::min_element(xs.begin(), xs.end())),
+		  xmax = floor(*std::max_element(xs.begin(), xs.end()));
+
+	return {xmin, xmax};
+}
+
+template<class Tri>
 std::vector<Pixel> scanline(const Tri& P){
-	/* TAREFA - aula 06 */
+	if (isDegenerated(P))
+		return {};
+
+	vec2 A = P[0];
+	vec2 B = P[1];
+	vec2 C = P[2];
+	int ymin = 	ceil(std::min({A[1], B[1], C[1]})),
+		ymax = floor(std::max({A[1], B[1], C[1]}));
+
 	std::vector<Pixel> out;
+	for(int y = ymin; y <= ymax; y++){
+
+		vec2 xs = intersecs(A, B, C, y);
+
+		for(int x = xs[0]; x <= xs[1]; x++)
+			out.push_back({x, y});
+	}
+	
 	return out;
 }
 
