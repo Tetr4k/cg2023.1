@@ -35,7 +35,7 @@ class Lines{
 class LineStrip{
 	size_t n;
 	public:
-	LineStrip(size_t n_verts){ n = n_verts-1; }
+	LineStrip(size_t n_verts){ n = n_verts >= 1 ? n_verts-1 : 0; }
 
 	size_t size() const{ return n; }
 
@@ -80,7 +80,7 @@ class Triangles{
 class TriangleStrip{
 	size_t n;
 	public:
-	TriangleStrip(size_t s){ n = s-2; }
+	TriangleStrip(size_t s){ n = s>=2 ? s-2 : s; }
 
 	size_t size() const{ return n; }
 
@@ -93,7 +93,7 @@ class TriangleStrip{
 class TriangleFan{
 	size_t n;
 	public:
-	TriangleFan(size_t s){ n = s-2; }
+	TriangleFan(size_t s){ n = s>=2 ? s-2 : s; }
 
 	size_t size() const{ return n; }
 
