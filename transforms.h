@@ -77,13 +77,16 @@ inline mat4 rotate(vec3 n, float theta){
 }
 
 inline mat4 lookAt(vec3 eye, vec3 center, vec3 up){
-	/* TAREFA - AULA 11 */
-	return {
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1
-	};
+	vec3 upN = normalize(up);
+	vec3 f = normalize(center-eye);
+	vec3 s = normalize(cross(f,upN));
+	vec3 u = cross(s,f);
+	//[s, u, -f, eye]
+	Mat V = toMat(s, u, -f);
+	Mat Vt= transpose(V);
+	Mat view = toMat4(Vt)*translate(-eye);
+
+	return view;
 }
 
 inline mat4 orthogonal(float l, float r, float b, float t, float n, float f){
@@ -112,13 +115,11 @@ inline mat4 frustum(float l, float r, float b, float t, float n, float f){
 }
 
 inline mat4 perspective(float fovy, float aspect, float Near, float Far){
-	/* TAREFA - AULA 12 */
-	return {
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1
-	};
+	float fovyRad = fovy*3.1415/180;
+	float t = Near*tan(fovyRad/2);
+	float r = t*aspect;
+
+	return frustum(-r, r, -t, t, Near, Far);
 }
 
 

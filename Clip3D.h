@@ -68,7 +68,30 @@ std::vector<Line<Varying>> clip(const std::vector<Line<Varying>>& lines){
 template<class Varying>
 std::vector<Varying> clip(const std::vector<Varying>& polygon, vec4 n){
 	std::vector<Varying> R;
-	/* TAREFA - AULA 14 */
+	for(unsigned int i=0; i < polygon.size(); i++){
+		Varying P = polygon[i];
+		Varying Q = polygon[(i+1) % polygon.size() ];
+		
+//reimplementa
+		vec4 p = getPosition(P),
+			 q = getPosition(Q);
+
+		float peP = dot(p, n),
+			  peQ = dot(q, n);
+
+		bool Pin = peP>=0,
+			 Qin = peQ>=0;
+
+		if(Pin!=Qin){
+			float t = peP/(peP-peQ);
+
+			Varying p = (1-t)*P+t*Q;//lerp(t, P, Q);
+			R.push_back(p);
+		}
+		if(Qin)
+			R.push_back(Q);
+	}
+	
 	return R;
 }
 
