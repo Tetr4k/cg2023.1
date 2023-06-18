@@ -42,9 +42,11 @@ struct RenderPipeline{
 	void draw(Triangle<Varying> tri){
 		vec4 P[] = { getPosition(tri[0]), getPosition(tri[1]), getPosition(tri[2]) };
 		vec2 T[] = { toScreen(P[0]), toScreen(P[1]), toScreen(P[2]) };
-
+		vec3 iw =  {1/P[0][3], 1/P[1][3], 1/P[2][3]};
 		for(Pixel p: rasterizeTriangle(T)){
 			vec3 t = barycentric_coords(toVec2(p), T);
+			t=t*iw;
+			t=1.0/(t[0]+t[1]+t[2])*t;
 
 			Varying vi = t[0]*tri[0] + t[1]*tri[1] + t[2]*tri[2];
 			paint(p, vi);

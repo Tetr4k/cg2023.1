@@ -115,8 +115,8 @@ inline std::vector<Pixel> bresenham(Pixel p0, Pixel p1){
 
 template<class Tri>
 std::vector<Pixel> rasterizeTriangle(const Tri& P){
-	//return simple_rasterize_triangle(P);
-	return scanline(P);
+	return simple_rasterize_triangle(P);
+	//return scanline(P);
 }
 
 template<class Tri>
