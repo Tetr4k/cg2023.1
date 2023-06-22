@@ -12,7 +12,7 @@ using Color = std::array<Byte, N>;
 using RGB  = Color<3>;
 using RGBA = Color<4>;
 
-RGB operator""_rgb(unsigned long long u){
+inline RGB operator""_rgb(unsigned long long u){
 	return RGB{
 		(Byte)(u >> 16),
 		(Byte)(u >>  8),
@@ -20,7 +20,7 @@ RGB operator""_rgb(unsigned long long u){
 	};
 }
 
-RGBA operator""_rgba(unsigned long long u){
+inline RGBA operator""_rgba(unsigned long long u){
 	return RGBA{
 		(Byte)(u >> 24),
 		(Byte)(u >> 16),
